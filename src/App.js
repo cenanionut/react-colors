@@ -1,24 +1,60 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import Palette from "./Palette";
+import seedColors from "./seedColors";
+import { generatePalette } from "./colorHelpers";
+import { Route, Routes } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import PaletteList from "./PaletteList";
+import SingleColorPalette from "./SingleColorPalette";
+import NewPaletteForm from "./NewPaletteForm";
 
 function App() {
+  const [palettes, setPalettes] = React.useState(
+    JSON.parse(window.localStorage.getItem("palettes")) || seedColors
+  );
+
+  const findPalette = (id) => palettes.find((palette) => palette.id === id);
+
+  const PaletteWrapper = () => {
+    const { id } = useParams();
+
+    const palette = generatePalette(findPalette(id));
+
+    return <Palette palette={palette} />;
+  };
+
+  const SingleColorPaletteWrapper = () => {
+    const { paletteId, colorId } = useParams();
+    const palette = generatePalette(findPalette(paletteId));
+    return <SingleColorPalette palette={palette} colorId={colorId} />;
+  };
+
+  const savePalette = (newPalette) => {
+    setPalettes((prevPalettes) => {
+      const updatedPalettes = [...prevPalettes, newPalette];
+      window.localStorage.setItem("palettes", JSON.stringify(updatedPalettes));
+      return updatedPalettes;
+    });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route exact path="/" element={<PaletteList palettes={palettes} />} />
+      <Route exact path="/palette/:id" element={<PaletteWrapper />} />
+      <Route
+        exact
+        path="/palette/:paletteId/:colorId"
+        element={<SingleColorPaletteWrapper />}
+      />
+      <Route
+        exact
+        path="/palette/new"
+        element={
+          <NewPaletteForm savePalette={savePalette} palettes={palettes} />
+        }
+      />
+    </Routes>
   );
 }
 
