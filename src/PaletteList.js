@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./styles/PaletteListStyles";
 import { Link } from "react-router-dom";
 
-const PaletteList = ({ palettes, classes }) => {
+const PaletteList = ({ palettes, classes, deletePalette }) => {
   const navigate = useNavigate();
 
   const goToPalette = (id) => {
@@ -24,6 +24,9 @@ const PaletteList = ({ palettes, classes }) => {
             <MiniPalette
               {...palette}
               handleClick={() => goToPalette(palette.id)}
+              handleDelete={deletePalette}
+              key={palette.id}
+              id={palette.id}
             />
           ))}
         </div>

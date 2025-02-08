@@ -54,7 +54,6 @@ export default function NewPaletteForm(props) {
   const [, setNewColorName] = React.useState("");
   let navigate = useNavigate();
   const defaultProps = { maxColors: 20 };
-  console.log("[NewPaletteForm] Styles: ", styles.buttons);
 
   const handleDrawerOpen = () => {
     setOpen(true);

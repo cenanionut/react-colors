@@ -38,9 +38,25 @@ function App() {
     });
   };
 
+  const deletePalette = (id) => {
+    setPalettes((prevPalettes) => {
+      const updatedPalettes = prevPalettes.filter(
+        (palette) => palette.id !== id
+      );
+      window.localStorage.setItem("palettes", JSON.stringify(updatedPalettes)); // Sincronizare localStorage
+      return updatedPalettes;
+    });
+  };
+
   return (
     <Routes>
-      <Route exact path="/" element={<PaletteList palettes={palettes} />} />
+      <Route
+        exact
+        path="/"
+        element={
+          <PaletteList palettes={palettes} deletePalette={deletePalette} />
+        }
+      />
       <Route exact path="/palette/:id" element={<PaletteWrapper />} />
       <Route
         exact
