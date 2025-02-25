@@ -16,6 +16,8 @@ import ColorPickerForm from "./ColorPickerForm";
 import styles from "./styles/NewPaletteFormStyles";
 import { DRAWER_WIDTH } from "./constants";
 
+import seedColors from "./seedColors";
+
 const drawerWidth = DRAWER_WIDTH;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
@@ -50,7 +52,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 export default function NewPaletteForm(props) {
   const [open, setOpen] = React.useState(true);
-  const [colors, setColors] = React.useState(props.palettes[0].colors);
+  const [colors, setColors] = React.useState(seedColors[0].colors);
   const [, setNewColorName] = React.useState("");
   let navigate = useNavigate();
   const defaultProps = { maxColors: 20 };
